@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rock-Paper-Scissors Game</title>
+    <style>
+      .game {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .buttons {
+        display: flex;
+        gap: 10px;
+      }
+      .choice {
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+      .choice:hover {
+        background-color: lightgray;
+      }
+      .result,
+      .score,
+      .winner {
+        margin: 10px 0;
+        font-size: 18px;
+      }
+      @media (max-width: 600px) {
+        .choice {
+          width: 40px;
+          height: 40px;
+          border-radius: 20px;
+          font-size: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="game">
+      <div class="buttons">
+        <button class="choice">🧔</button>
+        <button class="choice">📜</button>
+        <button class="choice">✂️</button>
+      </div>
+      <div class="result"></div>
+      <div class="score"></div>
+      <div class="winner"></div>
+    </div>
+    <script>
+        const buttons = document.querySelectorAll('.choice');
+        const result = document.querySelector('.result');
+        const score = document.querySelector('.score');
+        const winner = document.querySelector('.winner');
+  
+        let playerScore = 0;
+        let computerScore = 0;
+        let round = 1;
+  
+        function play(e) {
+          const playerChoice = e.target.textContent;
+          const computerChoice = getComputerChoice();
+          const roundWinner = getWinner(playerChoice, computerChoice);
+  
+          if (roundWinner === 'player') {
+            playerScore++;
+            result.textContent = `You win! ${playerChoice} beats ${computerChoice}`;
+          } else if (roundWinner === 'computer') {
+            computerScore++;
+            result.textContent = `You lose! ${computerChoice} beats ${playerChoice}`;
+          } else {
+            result.textContent = `It's a draw! Both players chose ${playerChoice}`;
+          }
+  
+          score.textContent = `Player: ${playerScore} Computer: ${computerScore}`;
+  
+          if (round === 5) {
+            if (playerScore > computerScore) {
+              winner.textContent = 'You are the overall winner!';
+            } else if (computerScore > playerScore) {
+              winner.textContent = 'The computer is the overall winner.';
+            } else {
+              winner.textContent = "It's a tie!";
+            }
+          } else {
+            round++;
+          }
+        }
+  
+        function getComputerChoice() {
+          const choices = ['rock', 'paper', 'scissors'];
+          const randomIndex = Math.floor(Math.random() * 3);
+          return choices[randomIndex];
+        }
+  
+        function getWinner(playerChoice, computerChoice) {
+          if (playerChoice === computerChoice) {
+            return 'draw';
+          } else if (playerChoice === 'rock' && computerChoice === 'scissors') {
+            return 'player';
+          } else if (playerChoice === 'paper' && computerChoice === 'rock') {
+            return 'player';
+          } else if (playerChoice === 'scissors' && computerChoice === 'paper') {
+            return 'player';
+          } else {
+            return 'computer';
+          }
+        }
+  
+        buttons.forEach(button => button.addEventListener('click', play));
+      </script>
+  </body>
+</html>
